@@ -1,5 +1,6 @@
 #! mrasm
 .ORG 0
+
 COMPARE:
 	CLR	R0
 	MOV	(0xFE),0x00

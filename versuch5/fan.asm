@@ -1,0 +1,52 @@
+#! mrasm
+.ORG 0
+    LDSP 0xEF
+
+MAINLOOP:
+	CALL TEMP
+
+    LD	R1,(0xFF)
+    SUB	R1,R0
+    JNC	LOWER
+
+    LD	R1,(0xFC)
+    SUB	R1,R0
+    JNS	HIGHER
+
+    MOV	(0xF0),(0xFE)
+	MOV	(0xFF),(0xFE)
+    JMP	MAINLOOP
+
+LOWER:
+    LD	R2,0x00
+    ST	(0xF0),R2
+	ST	(0xFF),R2
+    JMP	MAINLOOP
+
+HIGHER:
+    MOV	(0xF0),(0xFD)
+	MOV	(0xFF),(0xFD)
+    JMP	MAINLOOP
+
+TEMP:
+	CLR R0
+	LD R1,0x80
+	LOOP:
+		CMP	R1,0x01
+		JNS	END
+		ADD	R0,R1
+		ST	(0xF1),R0
+		BITT	(0xF1),0x10
+		JZS	LOWERTEMP
+		LSR	R1
+		JMP	LOOP
+
+	LOWERTEMP:
+		SUB	R0,R1
+		LSR	R1
+		JMP	LOOP
+
+	END:
+		LD	R1,0x80
+		ST	(0xFE),R0
+		RET

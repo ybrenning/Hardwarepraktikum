@@ -1,7 +1,8 @@
 #! mrasm
 .ORG 0
-CLR R0
-CLR R1
+    CLR R0
+    CLR R1
+
 LOOP:
     LD R0, (0xFC)
     LD R1, (0xFD)
